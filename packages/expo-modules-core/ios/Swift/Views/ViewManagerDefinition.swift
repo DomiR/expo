@@ -20,6 +20,11 @@ public class ViewManagerDefinition: ObjectDefinition {
   let eventNames: [String]
 
   /**
+   An array of the view lifecycle methods.
+   */
+  let lifecycleMethods: [AnyViewLifecycleMethod]
+
+  /**
    Default initializer receiving children definitions from the result builder.
    */
   override init(definitions: [AnyDefinition]) {
@@ -35,6 +40,9 @@ public class ViewManagerDefinition: ObjectDefinition {
         .compactMap { ($0 as? EventsDefinition)?.names }
         .joined()
     )
+
+    self.lifecycleMethods = definitions
+      .compactMap { $0 as? AnyViewLifecycleMethod }
 
     super.init(definitions: definitions)
   }
@@ -52,6 +60,14 @@ public class ViewManagerDefinition: ObjectDefinition {
   func propsDict() -> [String: AnyViewProp] {
     return props.reduce(into: [String: AnyViewProp]()) { acc, prop in
       acc[prop.name] = prop
+    }
+  }
+
+  internal func callLifecycleMethods(withType type: ViewLifecycleMethodType, forView view: UIView) {
+    for method in lifecycleMethods {
+      if method.methodType == type {
+        method(view)
+      }
     }
   }
 }

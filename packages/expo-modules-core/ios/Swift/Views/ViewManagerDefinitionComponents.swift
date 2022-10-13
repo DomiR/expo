@@ -24,3 +24,7 @@ public func Prop<ViewType: UIView, PropType: AnyArgument>(
     setter: setter
   )
 }
+
+public func OnPropsChanged<ViewType: UIView>(@_implicitSelfCapture _ closure: @escaping (ViewType) -> Void) -> ViewLifecycleMethod<ViewType> {
+  return ViewLifecycleMethod(type: .propsChanged, closure: closure)
+}

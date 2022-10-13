@@ -66,6 +66,16 @@ public class ExpoFabricView: ExpoFabricViewObjC {
   }
 
   /**
+   Calls lifecycle methods registered by `OnPropsChanged` definition component.
+   */
+  public override func callPropsChangedLifecycleMethod() {
+    guard let view = contentView, let viewManager = moduleHolder?.definition.viewManager else {
+      return
+    }
+    viewManager.callLifecycleMethods(withType: .propsChanged, forView: view)
+  }
+
+  /**
    The function that is called by Fabric when the view is unmounted and is being enqueued for recycling.
    It can also be called on app reload, so be careful to wipe out any dependencies specific to the currently running AppContext.
    */
