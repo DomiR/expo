@@ -28,6 +28,18 @@ public final class ImageModule: Module {
       Prop("transition") { (view, transition: ImageTransition?) in
         view.transition = transition
       }
+
+      Prop("blurRadius") { (view, blurRadius: Double) in
+        view.blurRadius = blurRadius
+      }
+
+      Prop("tintColor") { (view, tintColor: UIColor) in
+        view.imageTintColor = tintColor
+      }
+
+      OnPropsChanged { view in
+        view.loadFromSource(view.source)
+      }
     }
 
     Function("clearMemoryCache") {
